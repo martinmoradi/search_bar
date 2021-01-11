@@ -150,11 +150,7 @@ const showKeywordsList = (value) => {
       if (keywordAutoComplete.length > 0) {
         if (article.tags.includes(cleanedKeyword(keywordAutoComplete[0]))) {
           article.tags
-            .filter(
-              (tag) =>
-                !keywordAutoComplete.includes(cleanedKeyword(tag)) &&
-                !currentKeywords.includes(cleanedKeyword(tag))
-            )
+            .filter((tag) => !keywordAutoComplete.includes(cleanedKeyword(tag)))
             .forEach((filteredTag) =>
               keywordAutoComplete.push(cleanedKeyword(filteredTag))
             );
@@ -162,21 +158,21 @@ const showKeywordsList = (value) => {
       }
     });
 
-    keywordAutoComplete = keywordAutoComplete.filter(
-      (keyword) => !currentKeywords.includes(cleanedKeyword(keyword))
-    );
-
+     keywordAutoComplete
+       .filter((keyword) => !currentKeywords.includes(cleanedKeyword(keyword)))
+       .forEach((keyword) => {
+         keyWordUl.innerHTML += `<li onclick="addNewKeyword(${keyword}, ${cleanedKeyword(
+           keyword
+         )})">${keyword}</li>`;
+       });
     
 
-    // keywordAutoComplete.forEach((keyword) => {
-    //   keyWordUl.innerHTML += `<li onclick="addNewKeyword"(`${keyword}`, `${cleanedKeyword(keyword)}`)">${keyword}</li>`
-    // })
-
-    // This will allow you to add a new element in the list under the text input
-    // On click, we add the keyword, like so:
-    // keyWordUl.innerHTML += `
-    //    <li onclick="addNewKeyword(`${keyword}`, `${cleanedKeyword(keyword)}`)">${keyword}</li>
-    // `;
+        // This will allow you to add a new element in the list under the text input
+        // On click, we add the keyword, like so:
+        //  keyWordUl.innerHTML += `
+        //    <li onclick="addNewKeyword(`${keyword}`, `${cleanedKeyword(keyword)}`)">${keyword}</li>
+        // `;
+        
   }
 };
 
