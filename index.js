@@ -49,7 +49,6 @@ const toggleKeyword = (keyword) => {
 
   reloadArticles();
 };
-
 // The first argument is the keyword's label, what will be visible by the user.
 // It needs to handle uppercase, special characters, etc.
 // The second argument is the value of the checkbox. To be sure to not have bugs, we generally
@@ -89,11 +88,11 @@ const reloadArticles = () => {
   document.querySelector(".articlesList").innerHTML = "";
 
   let articlesToShow = new Array();
-   data.articles.forEach((article) => {
-      currentKeywords.forEach((keyword) => {
-          article.tags.includes(keyword) ? articlesToShow.push(article) : null
-      })
-  })
+  data.articles.forEach((article) => {
+    currentKeywords.forEach((keyword) => {
+      article.tags.includes(keyword) ? articlesToShow.push(article) : null;
+    });
+  });
 
   articlesToShow.forEach((article) => {
     document.querySelector(".articlesList").innerHTML += `
@@ -130,7 +129,6 @@ const cleanedKeyword = (keyword) => {
 
   return cleanedKeyword;
 };
-
 // TODO: Modify this function to show the keyword containing a part of the word inserted
 // into the form (starting autocompletion at 3 letters).
 // TODO: We also show all the words from the same category than this word.
@@ -141,6 +139,38 @@ const showKeywordsList = (value) => {
   if (value.length >= 3) {
     const keyWordUl = document.querySelector(".inputKeywordsHandle ul");
     resetKeywordsUl();
+
+    let keywordAutoComplete = new Array();
+    allKeywords.forEach((keyword) => {
+      if (cleanedKeyword(keyword).includes(cleanedKeyword(value))) {
+        keywordAutoComplete.push(cleanedKeyword(keyword));
+      }
+    });
+    data.articles.forEach((article) => {
+      if (keywordAutoComplete.length > 0) {
+        if (article.tags.includes(cleanedKeyword(keywordAutoComplete[0]))) {
+          article.tags
+            .filter(
+              (tag) =>
+                !keywordAutoComplete.includes(cleanedKeyword(tag)) &&
+                !currentKeywords.includes(cleanedKeyword(tag))
+            )
+            .forEach((filteredTag) =>
+              keywordAutoComplete.push(cleanedKeyword(filteredTag))
+            );
+        }
+      }
+    });
+
+    keywordAutoComplete = keywordAutoComplete.filter(
+      (keyword) => !currentKeywords.includes(cleanedKeyword(keyword))
+    );
+
+    
+
+    // keywordAutoComplete.forEach((keyword) => {
+    //   keyWordUl.innerHTML += `<li onclick="addNewKeyword"(`${keyword}`, `${cleanedKeyword(keyword)}`)">${keyword}</li>`
+    // })
 
     // This will allow you to add a new element in the list under the text input
     // On click, we add the keyword, like so:
