@@ -94,6 +94,10 @@ const reloadArticles = () => {
     });
   });
 
+  if (currentKeywords.length == 0) {
+    articlesToShow = data.articles;
+  }
+
   articlesToShow.forEach((article) => {
     document.querySelector(".articlesList").innerHTML += `
             <article>
@@ -158,21 +162,19 @@ const showKeywordsList = (value) => {
       }
     });
 
-     keywordAutoComplete
-       .filter((keyword) => !currentKeywords.includes(cleanedKeyword(keyword)))
-       .forEach((keyword) => {
-         keyWordUl.innerHTML += `<li onclick="addNewKeyword(${keyword}, ${cleanedKeyword(
-           keyword
-         )})">${keyword}</li>`;
-       });
-    
+    keywordAutoComplete
+      .filter((keyword) => !currentKeywords.includes(cleanedKeyword(keyword)))
+      .forEach((keyword) => {
+        keyWordUl.innerHTML += `<li onclick="addNewKeyword('${keyword}', '${cleanedKeyword(
+          keyword
+        )}')">${keyword}</li>`;
+      });
 
-        // This will allow you to add a new element in the list under the text input
-        // On click, we add the keyword, like so:
-        //  keyWordUl.innerHTML += `
-        //    <li onclick="addNewKeyword(`${keyword}`, `${cleanedKeyword(keyword)}`)">${keyword}</li>
-        // `;
-        
+    // This will allow you to add a new element in the list under the text input
+    // On click, we add the keyword, like so:
+    //  keyWordUl.innerHTML += `
+    //    <li onclick="addNewKeyword(`${keyword}`, `${cleanedKeyword(keyword)}`)">${keyword}</li>
+    // `;
   }
 };
 
